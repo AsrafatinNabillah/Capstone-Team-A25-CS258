@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "Name Segmentation": "Dormant Low Spenders",
+        "description": "Pelanggan yang sudah lama tidak bertransaksi, memiliki frekuensi sangat rendah, dan nilai pembelian kecil. Risiko churn tinggi dan membutuhkan reaktivasi.",
+        "strategies": [
+            "Reactivation campaign seperti email 'We Miss You' dan voucher comeback",
+            "Tawarkan flash sale dan promosi berbatas waktu",
+            "Kirim konten awareness: produk baru, edukasi manfaat produk",
+            "Lakukan survey churn untuk mengetahui penyebab berhenti membeli"
+        ]
+    },
+    {
+        "id": 2,
+        "Name Segmentation": "Active Mid Spenders",
+        "description": "Pelanggan dengan aktivitas pembelian sedang, frekuensi 3–4 kali, dan nilai transaksi menengah. Masih aktif dan memiliki potensi menjadi loyalists.",
+        "strategies": [
+            "Cross-selling dan upselling produk pelengkap",
+            "Berikan loyalty program level menengah seperti poin reward",
+            "Kirim personalized offer sesuai kategori favorit",
+            "Gunakan push notification atau email untuk reminder stok & promo"
+        ]
+    },
+    {
+        "id": 3,
+        "Name Segmentation": "Premium Loyalists",
+        "description": "Pelanggan paling bernilai dengan recency rendah, pembelian sangat sering, dan kontribusi pendapatan tertinggi. Loyalitas sangat kuat.",
+        "strategies": [
+            "Terapkan VIP program eksklusif dan early access produk baru",
+            "Berikan pengalaman premium seperti layanan prioritas",
+            "Tawarkan reward besar seperti poin ekstra atau cashback VIP",
+            "Jalankan referral program untuk memanfaatkan loyalitas mereka"
+        ]
+    },
+    {
+        "id": 4,
+        "Name Segmentation": "New Active Buyers",
+        "description": "Pelanggan baru yang masih aktif, namun frekuensi pembelian rendah karena baru memulai interaksi dengan brand. Memiliki potensi besar untuk bertumbuh.",
+        "strategies": [
+            "Kirim welcome series campaign termasuk penawaran pembelian ke-2",
+            "Berikan konten nurturing: how to use, tips manfaat produk",
+            "Tawarkan diskon repeat order 10–15%",
+            "Onboarding ke loyalty program dengan penjelasan manfaat poin dan bonus transaksi awal"
+        ]
+    }
+]
