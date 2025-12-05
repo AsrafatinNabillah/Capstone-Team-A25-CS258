@@ -490,65 +490,36 @@ with tab4:
 
 with tab5:
     st.subheader("💡 Strategic Recommendations by Segment")
-    
-    recommendations = {
-        "Premium Loyalists": {
-            "icon": "🏆",
-            "description": "Your best customers - high value, frequent purchases, recent activity",
-            "strategies": [
-                "Reward with VIP programs and exclusive early access",
-                "Seek testimonials and referrals",
-                "Test premium products and new features",
-                "Implement loyalty retention programs"
-            ]
-        },
-        "Active Mid Spenders": {
-            "icon": "💎",
-            "description": "High frequency buyers with good monetary value",
-            "strategies": [
-                "Upsell premium products and bundles",
-                "Create personalized product recommendations",
-                "Offer subscription or membership programs",
-                "Send appreciation campaigns"
-            ]
-        },
-        "Dormant Low Spenders": {
-            "icon": "⚠️",
-            "description": "Previously valuable customers showing declining activity",
-            "strategies": [
-                "Launch win-back campaigns with special offers",
-                "Conduct surveys to understand pain points",
-                "Provide personalized re-engagement incentives",
-                "Offer exclusive 'we miss you' discounts"
-            ]
-        },
-        "Lost": {
-            "icon": "😔",
-            "description": "Customers who haven't purchased in a long time",
-            "strategies": [
-                "Send re-activation campaigns with strong incentives",
-                "Update them on new products/improvements",
-                "Consider whether to continue marketing spend",
-                "Analyze exit patterns for future prevention"
-            ]
-        }
-    }
-    
-    for segment, details in recommendations.items():
-        if segment in df['Segment'].unique():
-            with st.expander(f"{details['icon']} {segment} - {details['description']}", expanded=True):
-                st.markdown(f"**Action Strategies:**")
-                for strategy in details['strategies']:
-                    st.markdown(f"- {strategy}")
-                
-                segment_size = len(df[df['Segment'] == segment])
-                segment_value = df[df['Segment'] == segment]['Monetary'].sum()
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.metric("Segment Size", f"{segment_size:,} customers")
-                with col2:
-                    st.metric("Total Value", f"${segment_value:,.0f}")
+
+    # ambil nama segmen yang ada di data + ada di JSON
+    json_by_name = {r["Name Segmentation"]: r for r in recs_json}
+    available_segments = [s for s in sorted(df["Segment"].unique())
+                          if s in json_by_name]
+
+    selected_segment = st.selectbox(
+        "Pilih segment yang ingin dianalisis:",
+        available_segments
+    )
+
+    rec = json_by_name[selected_segment]
+
+    st.markdown(f"### {rec['Name Segmentation']}")
+    st.markdown(f"_{rec['description']}_")
+
+    # metric size & value
+    seg_df = df[df["Segment"] == selected_segment]
+    seg_size = len(seg_df)
+    seg_value = seg_df["Monetary"].sum()
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Segment Size", f"{seg_size:,} customers")
+    with col2:
+        st.metric("Total Value", f"${seg_value:,.0f}")
+
+    st.markdown("**Action Strategies:**")
+    for s in rec["strategies"]:
+        st.markdown(f"- {s}")
 
 # Footer
 st.write("---")
@@ -557,4 +528,5 @@ st.markdown("""
     <p><strong>Customer Segmentation Analytics Platform</strong></p>
     <p>Powered by RFM Analysis & K-Means Clustering | Built with Streamlit</p>
 </div>
+
 """, unsafe_allow_html=True)
