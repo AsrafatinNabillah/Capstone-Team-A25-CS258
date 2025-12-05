@@ -129,11 +129,12 @@ def predict_segment(recency, frequency, monetary):
     })
     scaled_data = scaler.transform(input_data)
     cluster = int(model.predict(scaled_data)[0])
-    unique_segments = sorted(df["Segment"].unique())
-    if cluster >= len(unique_segments):
-        segment = f"Cluster {cluster}"
-    else:
-        segment = unique_segments[cluster]
+    cluster_map = (
+        df.groupby("Cluster")["Segment"]
+          .agg(lambda x: x.mode()[0])
+          .to_dict()
+    )
+    segment = cluster_map.get(cluster, f"Cluster {cluster}")
     return segment, cluster
 
 # Load data
@@ -541,4 +542,5 @@ st.markdown("""
     <p>Powered by RFM Analysis & K-Means Clustering | Built with Streamlit</p>
 </div>
 """, unsafe_allow_html=True)
+
 
