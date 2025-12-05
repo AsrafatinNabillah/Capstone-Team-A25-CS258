@@ -122,30 +122,18 @@ def create_segment_comparison():
     return comparison
 
 def predict_segment(recency, frequency, monetary):
-    # Step 1: Prediksi cluster dari model
-    input_data = pd.DataFrame({
+    input_point = np.array([recency, frequency, monetary])
+    df_rfm = df[['Recency', 'Frequency', 'Monetary']].to_numpy()
+    distances = np.linalg.norm(df_rfm - input_point, axis=1)
+    idx = np.argmin(distances)
+    closest_row = df.iloc[idx]
+    segment = closest_row['Segment']
+    input_scaled = scaler.transform(pd.DataFrame({
         "Recency": [recency],
         "Frequency": [frequency],
         "Monetary": [monetary]
-    })
-    scaled_data = scaler.transform(input_data)
-    model_cluster = int(model.predict(scaled_data)[0])
-    model_centroids = scaler.inverse_transform(model.cluster_centers_)
-    csv_centroids = (
-        df.groupby("Cluster")[["Recency", "Frequency", "Monetary"]]
-          .mean()
-          .reset_index()
-    )
-    from sklearn.metrics.pairwise import euclidean_distances
-    distances = euclidean_distances(
-        [model_centroids[model_cluster]], 
-        csv_centroids[["Recency", "Frequency", "Monetary"]]
-    )[0]
-    matched_csv_cluster = int(csv_centroids.iloc[distances.argmin()]["Cluster"])
-    segment = (
-        df[df["Cluster"] == matched_csv_cluster]["Segment"]
-        .mode()[0]
-    )
+    }))
+    model_cluster = int(model.predict(input_scaled)[0])
     return segment, model_cluster
 
 # Load data
@@ -553,6 +541,7 @@ st.markdown("""
     <p>Powered by RFM Analysis & K-Means Clustering | Built with Streamlit</p>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
