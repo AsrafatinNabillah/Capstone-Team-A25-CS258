@@ -122,15 +122,18 @@ def create_segment_comparison():
     return comparison
 
 def predict_segment(recency, frequency, monetary):
-    """Predict segment for new customer"""
     input_data = pd.DataFrame({
-        'Recency': [recency],
-        'Frequency': [frequency],
-        'Monetary': [monetary]
+        "Recency": [recency],
+        "Frequency": [frequency],
+        "Monetary": [monetary]
     })
     scaled_data = scaler.transform(input_data)
-    cluster = model.predict(scaled_data)[0]
-    segment = df[df['Cluster'] == cluster]['Segment'].iloc[0] if 'Cluster' in df.columns else f"Cluster {cluster}"
+    cluster = int(model.predict(scaled_data)[0])
+    unique_segments = sorted(df["Segment"].unique())
+    if cluster >= len(unique_segments):
+        segment = f"Cluster {cluster}"
+    else:
+        segment = unique_segments[cluster]
     return segment, cluster
 
 # Load data
@@ -538,3 +541,4 @@ st.markdown("""
     <p>Powered by RFM Analysis & K-Means Clustering | Built with Streamlit</p>
 </div>
 """, unsafe_allow_html=True)
+
