@@ -131,9 +131,6 @@ try:
     df, cluster_profile = load_data()
     model, scaler = load_model()
     
-    # Debug: Show column names
-    #st.sidebar.info(f"Available columns: {df.columns.tolist()}")
-    
     # Handle case-insensitive column names and reset index if needed
     df.columns = df.columns.str.strip()  # Remove whitespace
     
@@ -557,4 +554,5 @@ st.markdown("""
     <p><strong>Customer Segmentation Analytics Platform</strong></p>
     <p>Powered by RFM Analysis & K-Means Clustering | Built with Streamlit</p>
 </div>
+
 """, unsafe_allow_html=True)
