@@ -5,6 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
+import json
 
 # Page config
 st.set_page_config(
@@ -103,6 +104,12 @@ def create_rfm_radar(segment_data, segment_name):
     )
     return fig
 
+@st.cache_data
+def load_recommendations():
+    with open("data/recommendations.json", "r", encoding="utf-8") as f:
+        recs = json.load(f)
+    return recs
+
 def create_segment_comparison():
     """Create comprehensive segment comparison"""
     comparison = df.groupby('Segment').agg({
@@ -130,6 +137,7 @@ def predict_segment(recency, frequency, monetary):
 try:
     df, cluster_profile = load_data()
     model, scaler = load_model()
+    recs_json = load_recommendations()
     
     # Debug: Show column names
     #st.sidebar.info(f"Available columns: {df.columns.tolist()}")
@@ -521,6 +529,7 @@ with tab5:
     for s in rec["strategies"]:
         st.markdown(f"- {s}")
 
+
 # Footer
 st.write("---")
 st.markdown("""
@@ -528,5 +537,4 @@ st.markdown("""
     <p><strong>Customer Segmentation Analytics Platform</strong></p>
     <p>Powered by RFM Analysis & K-Means Clustering | Built with Streamlit</p>
 </div>
-
 """, unsafe_allow_html=True)
